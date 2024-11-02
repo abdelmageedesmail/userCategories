@@ -1,4 +1,5 @@
 HELP.md
+docker-compose.yml
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -38,5 +39,3 @@ out/
 
 ### Kotlin ###
 .kotlin
-
-docker-compose.yml
