@@ -17,7 +17,7 @@ data class AuthorEntity(
     @Column(name = "description")
     val description: String,
     @Column(name = "image")
-    var image: String,
+    var image: String?,
     @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val books: List<BookEntity> = emptyList()
 )

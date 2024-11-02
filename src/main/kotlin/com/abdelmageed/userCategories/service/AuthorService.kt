@@ -15,7 +15,7 @@ interface AuthorService {
     fun getAuthorById(id: Int): AuthorEntity?
     fun deleteAuthor(id: Int)
     fun partialUpdate(
-        id: Int, path: String?,
+        id: Int, path: String,
         name: String?,
         age: Int?,
         description: String?,

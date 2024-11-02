@@ -86,15 +86,15 @@ class AuthorController(private val authorService: AuthorService) {
         @RequestParam name: String?,
         @RequestParam age: Int?,
         @RequestParam description: String?,
-        @RequestParam fileMultipart: MultipartFile?
+        @RequestParam("image") imageFile: MultipartFile
     ): BaseResponse<AuthorResponse?>? {
         val partialUpdate = authorService.partialUpdate(
             id,
-            path,
+            path ?: "",
             name,
             age,
             description,
-            fileMultipart
+            imageFile
         )
         return BaseResponse(200, data = partialUpdate.toAuthorResponse(), "User updated successfully")
     }

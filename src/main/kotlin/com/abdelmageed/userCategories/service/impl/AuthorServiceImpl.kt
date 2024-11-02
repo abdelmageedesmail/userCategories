@@ -68,7 +68,7 @@ class AuthorServiceImpl(
 
     override fun partialUpdate(
         id: Int,
-        path: String?,
+        path: String,
         name: String?,
         age: Int?,
         description: String?,
@@ -77,13 +77,19 @@ class AuthorServiceImpl(
         val author = authorRepository.findById(id.toString()).orElseThrow {
             ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id $id")
         }
-        var fileName = ""
+        var fileName: String? = null
+        var uniqueFileName: String? = null
         author?.let {
-            fileName = fileMultipart?.originalFilename ?: author.image
-            val cleanFileName = fileName.substringAfterLast('/', fileName)
-                .substringAfterLast('\\', fileName)
+            fileName = fileMultipart?.originalFilename
+            val cleanFileName = fileName?.substringAfterLast('/', fileName ?: "")
+                ?.substringAfterLast('\\', fileName ?: "")
 
-            val uniqueFileName = "${System.currentTimeMillis()}_$cleanFileName"
+            uniqueFileName = if (fileName != null) {
+                "${System.currentTimeMillis()}_$cleanFileName"
+            } else {
+                author.image
+            }
+
 
             val filePath = path + File.separator + uniqueFileName
             val imageFile = File(path)
@@ -97,9 +103,9 @@ class AuthorServiceImpl(
 
         val updateRequest = author.copy(
             id = author.id,
-            name = author.name,
-            description = author.description,
-            image = fileName
+            name = name ?: author.name,
+            description = description ?: author.description,
+            image = uniqueFileName
         )
         return authorRepository.save(updateRequest)
     }
